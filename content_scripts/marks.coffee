@@ -29,6 +29,10 @@ Marks =
   isGlobalMark: (event, keyChar) ->
     event.shiftKey and keyChar not in @previousPositionRegisters
 
+  isGlobalMark: (event, keyChar, swapCaseOption = true) ->
+    toggle = (bool) -> if swapCaseOption then not bool else bool
+    toggle(event.shiftKey) and keyChar not in @previousPositionRegisters
+
   activateCreateMode: ->
     @mode = new Mode
       name: "create-mark"
