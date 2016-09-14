@@ -178,6 +178,15 @@ DomUtils =
       rects.push {element: area, rect: rect} if rect and not isNaN rect.top
     rects
 
+  # Determine whether element is visible at point (x,y); that is, that no other element is overlaying it.
+  # document.elementFromPoint() finds an element at an x,y location.  Node.contains() checks whether an
+  # element contains another. Note that someNode.contains(someNode) is true.  If we do not find our element as
+  # a descendant of any element we find, then we assume that it's completely covered.
+  elementIsVisible: (element, x, y) ->
+    elementFromPoint = document.elementFromPoint x, y
+    elementFromPoint and
+      (element.contains(elementFromPoint) or elementFromPoint.contains element)
+
   #
   # Selectable means that we should use the simulateSelect method to activate the element instead of a click.
   #
