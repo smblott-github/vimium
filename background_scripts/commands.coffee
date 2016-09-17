@@ -86,6 +86,15 @@ Commands =
     Settings.set "passNextKeyKeys",
       (key for own key of @keyToCommandRegistry when @keyToCommandRegistry[key].command == "passNextKey" and 1 < key.length)
 
+    # Push any key mappings for escape into Settings so that they are available in KeyboardUtils.isEscape(),
+    # and remove those bindings from the key-to-command registry (they're not needed).
+    escapeKeyBindings =
+      (key for own key of @keyToCommandRegistry when @keyToCommandRegistry[key].command == "escape")
+    for own key of escapeKeyBindings
+      delete @keyToCommandRegistry[key]
+
+    Settings.set "escapeKeyBindings", escapeKeyBindings
+
   # Command options follow command mappings, and are of one of two forms:
   #   key=value     - a value
   #   key           - a flag
@@ -196,6 +205,7 @@ Commands =
       "moveTabRight"]
     misc:
       ["showHelp",
+      "escape",
       "toggleViewSource"]
 
   # Rarely used commands are not shown by default in the help dialog or in the README. The goal is to present
@@ -224,7 +234,9 @@ Commands =
     "closeOtherTabs",
     "enterVisualLineMode",
     "toggleViewSource",
-    "passNextKey"]
+    "passNextKey",
+    "escape"
+  ]
 
 defaultKeyMappings =
   "?": "showHelp"
@@ -342,6 +354,7 @@ commandDescriptions =
   enterVisualLineMode: ["Enter visual line mode", { noRepeat: true }]
 
   focusInput: ["Focus the first text input on the page"]
+  escape: ["Escape"]
 
   "LinkHints.activateMode": ["Open a link in the current tab"]
   "LinkHints.activateModeToOpenInNewTab": ["Open a link in a new tab"]
