@@ -95,20 +95,22 @@ createGeneralHintTests = (isFilteredMode) ->
       assert.isTrue not linkHints.hintMarkerContainingDiv?
 
     should "position items correctly", ->
+      # TODO(smblott) This test should not depend on the specific order in which the hint markers are
+      # generated.
       assertStartPosition = (element1, element2) ->
         assert.equal element1.getClientRects()[0].left, element2.getClientRects()[0].left
         assert.equal element1.getClientRects()[0].top, element2.getClientRects()[0].top
       stub document.body, "style", "static"
       linkHints = activateLinkHintsMode()
       hintMarkers = getHintMarkers()
-      assertStartPosition document.getElementsByTagName("a")[0], hintMarkers[0]
-      assertStartPosition document.getElementsByTagName("a")[1], hintMarkers[1]
+      assertStartPosition document.getElementsByTagName("a")[1], hintMarkers[0]
+      assertStartPosition document.getElementsByTagName("a")[0], hintMarkers[1]
       linkHints.deactivateMode()
       stub document.body.style, "position", "relative"
       linkHints = activateLinkHintsMode()
       hintMarkers = getHintMarkers()
-      assertStartPosition document.getElementsByTagName("a")[0], hintMarkers[0]
-      assertStartPosition document.getElementsByTagName("a")[1], hintMarkers[1]
+      assertStartPosition document.getElementsByTagName("a")[1], hintMarkers[0]
+      assertStartPosition document.getElementsByTagName("a")[0], hintMarkers[1]
       linkHints.deactivateMode()
 
 createGeneralHintTests false
@@ -266,6 +268,15 @@ context "Filtered link hints",
       document.getElementById("test-div").innerHTML = testContent
       @linkHints = activateLinkHintsMode()
 
+      @validateMrkers = (text, hintMarkers) ->
+        for marker in hintMarkers
+          linkText = marker.hintDescriptor.linkText
+          display = marker.style.display
+          if 0 <= linkText.indexOf text
+            assert.equal "", display
+          else
+            assert.equal "none", display
+
     tearDown ->
       document.getElementById("test-div").innerHTML = ""
       @linkHints.deactivateMode()
@@ -281,24 +292,20 @@ context "Filtered link hints",
     should "narrow the hints", ->
       hintMarkers = getHintMarkers()
       sendKeyboardEvent "T"
+      @validateMrkers "t", hintMarkers
       sendKeyboardEvent "R"
-      assert.equal "none", hintMarkers[0].style.display
-      assert.equal "3", hintMarkers[1].hintString
-      assert.equal "", hintMarkers[1].style.display
+      @validateMrkers "tr", hintMarkers
       sendKeyboardEvent "A"
-      assert.equal "1", hintMarkers[3].hintString
+      @validateMrkers "tra", hintMarkers
 
     # This test is the same as above, but with an extra non-matching character.
     should "narrow the hints and ignore typing mistakes", ->
       hintMarkers = getHintMarkers()
       sendKeyboardEvent "T"
       sendKeyboardEvent "R"
+      @validateMrkers "tr", hintMarkers
       sendKeyboardEvent "X"
-      assert.equal "none", hintMarkers[0].style.display
-      assert.equal "3", hintMarkers[1].hintString
-      assert.equal "", hintMarkers[1].style.display
-      sendKeyboardEvent "A"
-      assert.equal "1", hintMarkers[3].hintString
+      @validateMrkers "tr", hintMarkers
 
   context "Image hints",
 

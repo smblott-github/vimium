@@ -753,16 +753,12 @@ LocalHints =
         visibleElement = @getVisibleClickable element
         visibleElements.push visibleElement...
 
-    # Traverse the DOM from descendants to ancestors, so later elements show above earlier elements.
-    visibleElements = visibleElements.reverse()
-
     # Filter out suspected false positives.  A false positive is taken to be an element marked as a possible
     # false positive for which a close descendant is already clickable.  False positives tend to be close
-    # together in the DOM, so - to keep the cost down - we only search nearby elements.  NOTE(smblott): The
-    # visible elements have already been reversed, so we're visiting descendants before their ancestors.
+    # together in the DOM, so - to keep the cost down - we only search nearby elements.
     descendantsToCheck = [1..3] # This determines how many descendants we're willing to consider.
     visibleElements =
-      for element, position in visibleElements
+      for element, position in visibleElements.reverse(0)
         continue if element.possibleFalsePositive and do ->
           index = Math.max 0, position - 6 # This determines how far back we're willing to look.
           while index < position
