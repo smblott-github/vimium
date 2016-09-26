@@ -758,7 +758,7 @@ LocalHints =
     # together in the DOM, so - to keep the cost down - we only search nearby elements.
     descendantsToCheck = [1..3] # This determines how many descendants we're willing to consider.
     visibleElements =
-      for element, position in visibleElements.reverse(0)
+      for element, position in visibleElements.reverse()
         continue if element.possibleFalsePositive and do ->
           index = Math.max 0, position - 6 # This determines how far back we're willing to look.
           while index < position
