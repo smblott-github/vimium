@@ -95,7 +95,7 @@ KeyboardUtils =
           # characters (via event.key).
           keyChar = @getKeyCharString event
           keyCharFromKey = @getKeyCharUsingKey event
-          (keyChar in exitModeBindings) or keyCharFromKey in exitModeBindings
+          (keyChar and keyChar in exitModeBindings) or (keyCharFromKey and keyCharFromKey in exitModeBindings)
 
   # TODO. This is probably a poor way of detecting printable characters.  However, it shouldn't incorrectly
   # identify any of chrome's own keyboard shortcuts as printable.

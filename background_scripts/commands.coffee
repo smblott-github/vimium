@@ -94,7 +94,7 @@ Commands =
       (key for own key of @keyToCommandRegistry when @keyToCommandRegistry[key].command == "exitMode")
 
     if 0 < exitModeBindings.length
-      delete @keyToCommandRegistry[key] for own key of exitModeBindings
+      delete @keyToCommandRegistry[key] for key in exitModeBindings
       Settings.set "exitModeBindings", exitModeBindings
     else
       Settings.clear "exitModeBindings"
