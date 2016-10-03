@@ -81,16 +81,20 @@ KeyboardUtils =
 
   isPrimaryModifierKey: (event) -> if (@platform == "Mac") then event.metaKey else event.ctrlKey
 
-  isEscape: (event) ->
-    event.keyCode == @keyCodes.ESC or
-      do =>
-        # Handle custom mappings (the "exitMode" command).
-        # We use @getKeyCharString for non-printable characters, and @getKeyCharUsingKey for printable
-        # characters (via event.key).
-        keyChar = @getKeyCharString event
-        keyCharFromKey = @getKeyCharUsingKey event
-        exitModeBindings = Settings.get "exitModeBindings"
-        (keyChar in exitModeBindings) or keyCharFromKey in exitModeBindings
+  isEscape: do ->
+    exitModeBindings = []
+    Settings.use "exitModeBindings", (value) -> exitModeBindings = value
+    Settings.postUpdateHooks.exitModeBindings = (value) -> exitModeBindings = value
+
+    (event) ->
+      event.keyCode == @keyCodes.ESC or
+        do =>
+          # Handle custom mappings (the "exitMode" command).
+          # We use @getKeyCharString for non-printable characters, and @getKeyCharUsingKey for printable
+          # characters (via event.key).
+          keyChar = @getKeyCharString event
+          keyCharFromKey = @getKeyCharUsingKey event
+          (keyChar in exitModeBindings) or keyCharFromKey in exitModeBindings
 
   # TODO. This is probably a poor way of detecting printable characters.  However, it shouldn't incorrectly
   # identify any of chrome's own keyboard shortcuts as printable.
