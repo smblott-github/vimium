@@ -106,6 +106,7 @@ helpDialogHtmlForCommandGroup = (group, commandsToKey, availableCommands,
     showUnboundCommands, showCommandNames) ->
   html = []
   for command in Commands.commandGroups[group]
+    continue if Commands.availableCommands[command].noHelpPageListing
     keys = commandsToKey[command] || []
     bindings = ("<span class='vimiumHelpDialogKey'>#{Utils.escapeHtml key}</span>" for key in keys).join ", "
     if (showUnboundCommands || commandsToKey[command])
