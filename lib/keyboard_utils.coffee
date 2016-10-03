@@ -83,8 +83,9 @@ KeyboardUtils =
 
   isEscape: do ->
     exitModeBindings = []
-    Settings.use "exitModeBindings", (value) -> exitModeBindings = value
-    Settings.postUpdateHooks.exitModeBindings = (value) -> exitModeBindings = value
+    Settings.use "exitModeBindings", (value) ->
+      exitModeBindings = value
+      Settings.postUpdateHooks.exitModeBindings = (value) -> exitModeBindings = value
 
     (event) ->
       event.keyCode == @keyCodes.ESC or
