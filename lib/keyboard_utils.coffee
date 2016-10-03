@@ -43,6 +43,8 @@ KeyboardUtils =
   getKeyCharUsingKey: (event) ->
     if event.keyCode of @keyNames
       @keyNames[event.keyCode]
+    else if not event.key?
+      ""
     else if event.key.length == 1
       event.key
     else if event.key.length == 2 and "F1" <= event.key <= "F9"
@@ -83,10 +85,12 @@ KeyboardUtils =
     event.keyCode == @keyCodes.ESC or
       do =>
         # Handle custom mappings (the "exitMode" command).
+        # We use @getKeyCharString for non-printable characters, and @getKeyCharUsingKey for printable
+        # characters (via event.key).
         keyChar = @getKeyCharString event
-        for key in Settings.get "escapeKeyBindings"
-          return true if key == keyChar
-        false
+        keyCharFromKey = @getKeyCharUsingKey event
+        exitModeBindings = Settings.get "escapeKeyBindings"
+        (keyChar in exitModeBindings) or keyCharFromKey in exitModeBindings
 
   # TODO. This is probably a poor way of detecting printable characters.  However, it shouldn't incorrectly
   # identify any of chrome's own keyboard shortcuts as printable.
