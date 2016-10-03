@@ -178,7 +178,7 @@ Settings =
     helpDialog_showAdvancedCommands: false
     optionsPage_showAdvancedOptions: false
     passNextKeyKeys: []
-    escapeKeyBindings: []
+    exitModeBindings: []
 
 Settings.init()
 

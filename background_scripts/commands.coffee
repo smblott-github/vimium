@@ -90,14 +90,14 @@ Commands =
 
     # Push any key mappings for exitMode into Settings so that they are available in KeyboardUtils.isEscape(),
     # and remove those bindings from @keyToCommandRegistry (they're not needed).
-    escapeKeyBindings =
+    exitModeBindings =
       (key for own key of @keyToCommandRegistry when @keyToCommandRegistry[key].command == "exitMode")
 
-    if 0 < escapeKeyBindings.length
-      delete @keyToCommandRegistry[key] for own key of escapeKeyBindings
-      Settings.set "escapeKeyBindings", escapeKeyBindings
+    if 0 < exitModeBindings.length
+      delete @keyToCommandRegistry[key] for own key of exitModeBindings
+      Settings.set "exitModeBindings", exitModeBindings
     else
-      Settings.clear "escapeKeyBindings"
+      Settings.clear "exitModeBindings"
 
   # Command options follow command mappings, and are of one of two forms:
   #   key=value     - a value
