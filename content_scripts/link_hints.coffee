@@ -811,16 +811,11 @@ LocalHints =
         nonOverlappingElements.push visibleElement unless visibleElement.secondClassCitizen
 
     # Position the rects within the window.
-    if getComputedStyle(document.documentElement).position == "static"
-      top = window.scrollY
-      left = window.scrollX
-    else
-      rect = document.documentElement.getBoundingClientRect()
-      top = -rect.top
-      left = -rect.left
+    documentRect = document.documentElement.getBoundingClientRect()
+    [top, left] = [documentRect.top, documentRect.left]
     for hint in nonOverlappingElements
-      hint.rect.top += top
-      hint.rect.left += left
+      hint.rect.top -= top
+      hint.rect.left -= left
 
     if Settings.get "filterLinkHints"
       @withLabelMap (labelMap) =>
