@@ -1,5 +1,7 @@
 
 getVimiumResources = ->
+  # Important.  After editing any of these resources, run "cake build" to push the corresponding changes
+  # to ../pages/vimium_resources.html".
   jss: [
     "/lib/utils.js",
     "/lib/keyboard_utils.js",
