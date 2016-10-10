@@ -32,10 +32,11 @@ textInputXPath = (->
 # This is set by Frame.registerFrameId(). A frameId of 0 indicates that this is the top frame in the tab.
 frameId = null
 
-# For debugging only. This logs to the console on the background page.
+# For debugging only. This writes to the Vimium log page, the URL of whichis shown on the console on the
+# background page.
 bgLog = (args...) ->
   args = (arg.toString() for arg in args)
-  chrome.runtime.sendMessage handler: "log", message: args.join " "
+  Frame.postMessage "log", message: args.join " "
 
 # If an input grabs the focus before the user has interacted with the page, then grab it back (if the
 # grabBackFocus option is set).
@@ -63,7 +64,7 @@ class GrabBackFocus extends Mode
           @exit()
 
   grabBackFocus: (element) ->
-    return @continueBubbling unless DomUtils.isEditable element
+    return @continueBubbling unless DomUtils.isFocusable element
     element.blur()
     @suppressEvent
 
@@ -143,7 +144,7 @@ initializeOnEnabledStateKnown = (isEnabledForUrl) ->
   if isEnabledForUrl
     # We only initialize (and activate) the Vomnibar in the top frame.  Also, we do not initialize the
     # Vomnibar until we know that Vimium is enabled.  Thereafter, there's no more initialization to do.
-    Vomnibar.init() if DomUtils.isTopFrame()
+    DomUtils.documentComplete Vomnibar.init.bind Vomnibar if DomUtils.isTopFrame()
     initializeOnEnabledStateKnown = ->
 
 #
@@ -257,8 +258,8 @@ Frame =
     window.removeEventListener "hashchange", onFocus
 
 setScrollPosition = ({ scrollX, scrollY }) ->
-  if DomUtils.isTopFrame()
-    DomUtils.documentReady ->
+  DomUtils.documentReady ->
+    if DomUtils.isTopFrame()
       window.focus()
       document.body.focus()
       if 0 < scrollX or 0 < scrollY
@@ -363,7 +364,7 @@ extend window,
     new VisualMode userLaunchedMode: true
 
   enterVisualLineMode: ->
-    new VisualLineMod userLaunchedMode: true
+    new VisualLineMode userLaunchedMode: true
 
   passNextKey: (count) ->
     new PassNextKeyMode count
@@ -543,7 +544,7 @@ followLink = (linkElement) ->
 # next big thing', and 'more' over 'nextcompany', even if 'next' occurs before 'more' in :linkStrings.
 #
 findAndFollowLink = (linkStrings) ->
-  linksXPath = DomUtils.makeXPath(["a", "button", "*[@onclick or @role='link' or contains(@class, 'button')]"])
+  linksXPath = DomUtils.makeXPath(["a", "*[@onclick or @role='link' or contains(@class, 'button')]"])
   links = DomUtils.evaluateXPath(linksXPath, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE)
   candidateLinks = []
 
@@ -564,7 +565,7 @@ findAndFollowLink = (linkStrings) ->
     linkMatches = false
     for linkString in linkStrings
       if link.innerText.toLowerCase().indexOf(linkString) != -1 ||
-          link.value?.indexOf(linkString) != -1
+          0 <= link.value?.indexOf? linkString
         linkMatches = true
         break
     continue unless linkMatches
@@ -637,10 +638,11 @@ window.HelpDialog ?=
   abort: -> @helpUI.hide false if @isShowing()
 
   toggle: (request) ->
-    @helpUI ?= new UIComponent "pages/help_dialog.html", "vimiumHelpDialogFrame", ->
-    if @isShowing()
+    DomUtils.documentComplete =>
+      @helpUI ?= new UIComponent "pages/help_dialog.html", "vimiumHelpDialogFrame", ->
+    if @helpUI? and @isShowing()
       @helpUI.hide()
-    else
+    else if @helpUI?
       @helpUI.activate extend request,
         name: "activate", focus: true
 
