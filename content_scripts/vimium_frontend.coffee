@@ -41,10 +41,16 @@ bgLog = (args...) ->
 # If an input grabs the focus before the user has interacted with the page, then grab it back (if the
 # grabBackFocus option is set).
 class GrabBackFocus extends Mode
+  @mostRecentInstance: null
+
   constructor: ->
     super
       name: "grab-back-focus"
+      singleton: "grab-back-focus"
       keydown: => @alwaysContinueBubbling => @exit()
+
+    GrabBackFocus.mostRecentInstance = this
+    @onExit -> GrabBackFocus.mostRecentInstance = null
 
     @push
       _name: "grab-back-focus-mousedown"

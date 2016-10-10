@@ -107,6 +107,9 @@ HintCoordinator =
       @suppressKeyboardEvents = null
       @onExit = [] unless frameId == originatingFrameId
       @linkHintsMode = new LinkHintsMode hintDescriptors, availableModes[modeIndex]
+      # Grab-back-focus mode might be active.  If this frame does not have the focus, then that mode will not
+      # detect that the user has begun interacting with the page; so we manually deactivate it.
+      Utils.nextTick -> GrabBackFocus.mostRecentInstance?.exit()
 
   # The following messages are exchanged between frames while link-hints mode is active.
   updateKeyState: (request) -> @linkHintsMode.updateKeyState request
