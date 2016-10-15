@@ -52,33 +52,43 @@ Marks =
             localStorage[@getLocationKey keyChar] = @getMarkString()
             @showMessage "Created local mark", keyChar
 
-  activateGotoMode: ->
-    @mode = new Mode
-      name: "goto-mark"
-      indicator: "Go to mark..."
-      exitOnEscape: true
-      suppressAllKeyboardEvents: true
-      keypress: (event) =>
-        @exit =>
-          markName = String.fromCharCode event.charCode
-          if @isGlobalMark event, markName
-            # This key must match @getLocationKey() in the back end.
-            key = "vimiumGlobalMark|#{markName}"
-            chrome.storage.sync.get key, (items) ->
-              if key of items
-                chrome.runtime.sendMessage handler: 'gotoMark', markName: markName
-                HUD.showForDuration "Jumped to global mark '#{markName}'", 1000
-              else
-                HUD.showForDuration "Global mark not set '#{markName}'", 1000
+  activateGotoMode: (count, {registryEntry}) ->
+    goToMark = (event, markName = null) =>
+      markName ?= String.fromCharCode event.charCode
+      console.log event.shiftKey, markName
+      if @isGlobalMark event, markName
+        # This key must match @getLocationKey() in the back end.
+        key = "vimiumGlobalMark|#{markName}"
+        chrome.storage.sync.get key, (items) ->
+          if key of items
+            chrome.runtime.sendMessage handler: 'gotoMark', markName: markName
+            HUD.showForDuration "Jumped to global mark '#{markName}'", 1000
           else
-            markString = @localRegisters[markName] ? localStorage[@getLocationKey markName]
-            if markString?
-              @setPreviousPosition()
-              position = JSON.parse markString
-              window.scrollTo position.scrollX, position.scrollY
-              @showMessage "Jumped to local mark", markName
-            else
-              @showMessage "Local mark not set", markName
+            HUD.showForDuration "Global mark not set '#{markName}'", 1000
+      else
+        markString = @localRegisters[markName] ? localStorage[@getLocationKey markName]
+        if markString?
+          @setPreviousPosition()
+          position = JSON.parse markString
+          window.scrollTo position.scrollX, position.scrollY
+          @showMessage "Jumped to local mark", markName
+        else
+          @showMessage "Local mark not set", markName
+
+    if registryEntry.options?.mark?.length == 1
+      markName = registryEntry.options.mark
+      # TODO(smblott) We should refactor this.  Here, we're squeezing new logic into the legacy key handling.
+      # For the option "mark=X", we cannot tell whether the shift key is depressed.  Here, we detect capital
+      # letters automatically, but for other characters the user has to specify the "global" option.
+      fakeKeyboardEvent = shiftKey: registryEntry.options.global? or markName != markName.toLowerCase()
+      goToMark fakeKeyboardEvent, markName
+    else
+      @mode = new Mode
+        name: "goto-mark"
+        indicator: "Go to mark..."
+        exitOnEscape: true
+        suppressAllKeyboardEvents: true
+        keypress: (event) => @exit -> goToMark event
 
 root = exports ? window
 root.Marks =  Marks
