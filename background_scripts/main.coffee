@@ -145,15 +145,34 @@ mkRepeatCommand = (command) -> (request) ->
 # These are commands which are bound to keystrokes which must be handled by the background page. They are
 # mapped in commands.coffee.
 BackgroundCommands =
+  # Create a new tab.  Also, with:
+  #     map X createTab http://www.bbc.com/news
+  # create a new tab with the given URL.
   createTab: mkRepeatCommand (request, callback) ->
-    request.url ?= do ->
-      url = Settings.get "newTabUrl"
-      if url == "pages/blank.html"
-        # "pages/blank.html" does not work in incognito mode, so fall back to "chrome://newtab" instead.
-        if request.tab.incognito then "chrome://newtab" else chrome.runtime.getURL newTabUrl
+    request.urls ?=
+      if request.url
+        # If the request contains a URL, then use it.
+        [request.url]
       else
-        url
-    TabOperations.openUrlInNewTab request, (tab) -> callback extend request, {tab, tabId: tab.id}
+        # Otherwise, if we have a registryEntry containing URLs, then use them.
+        urlList = (opt for opt in request.registryEntry.optionList when Utils.isUrl opt)
+        if 0 < urlList.length
+          urlList
+        else
+          # Otherwise, just create a new tab.
+          newTabUrl = Settings.get "newTabUrl"
+          if newTabUrl == "pages/blank.html"
+            # "pages/blank.html" does not work in incognito mode, so fall back to "chrome://newtab" instead.
+            [if request.tab.incognito then "chrome://newtab" else chrome.runtime.getURL newTabUrl]
+          else
+            [newTabUrl]
+    urls = request.urls[..].reverse()
+    do openNextUrl = (request) ->
+      if 0 < urls.length
+        TabOperations.openUrlInNewTab (extend request, {url: urls.pop()}), (tab) ->
+          openNextUrl extend request, {tab, tabId: tab.id}
+      else
+        callback request
   duplicateTab: mkRepeatCommand (request, callback) ->
     chrome.tabs.duplicate request.tabId, (tab) -> callback extend request, {tab, tabId: tab.id}
   moveTabToNewWindow: ({count, tab}) ->
