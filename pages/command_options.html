@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Vimium Command Options</title>
+    <!-- We re-use some styling from the options page, so that the look and feel here is similar -->
+    <link rel="stylesheet" type="text/css" href="options.css">
+    <link rel="stylesheet" type="text/css" href="command_options.css">
+    <link rel="import" href="vimium_resources.html">
+    <script src="../background_scripts/commands.js"></script>
+    <script src="command_options.js"></script>
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <header>Vimium Command Options</header>
+      <p>
+        Some Vimium commands support <i>command options</i>.  These are additional flags, parameters or other
+        data which, when appended to a custom key mapping on the options page, change the behaviour of the
+        mapped command.
+      </p>
+      <p>
+        The following command options are supported in this version of Vimium.  In the examples, replace <code>X</code> and
+        <code>Y</code> with the keys of your choice.
+      </p>
+
+      <header>Command Option Examples</header>
+      <p>
+        <dl id="commandOptionsList"></dl>
+      </p>
+    </div>
+
+    <template id="commandOption">
+      <div class="extraPaddingBottom">
+        <dt class="commandOptionHeader"></dt>
+        <dd>
+          <span class="commandOptionExplanation"></span><br />
+          <pre class="commandOptionExamples"></pre>
+        </dd>
+      </div>
+    </template>
+
+  </body>
+</html>

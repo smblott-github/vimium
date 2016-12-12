@@ -1,0 +1,41 @@
+
+div#wrapper
+{
+  width: 730px;
+}
+
+.extraPaddingBottom {
+  padding-bottom: 15px;
+}
+
+code {
+  background-color: #f7f7f7; /* Same as Github. */
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 2px;
+  padding-right: 2px;
+  border-radius: 2px;
+}
+
+pre {
+  background-color: #f7f7f7; /* Same as Github. */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-top: 8px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  border-radius: 2px;
+  white-space: pre-wrap;
+}
+
+.commandOptionExplanation {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+dd {
+   margin-top: 8px;
+}

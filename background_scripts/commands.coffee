@@ -407,7 +407,48 @@ commandDescriptions =
   "Marks.activateCreateMode": ["Create a new mark", { noRepeat: true }]
   "Marks.activateGotoMode": ["Go to a mark", { noRepeat: true }]
 
-Commands.init()
+class CommandOptionHelp
+  constructor: (@title, @explanation, examples) ->
+    @examples = examples.split(/\n/).map((s) -> s.trim())
+
+extend Commands,
+  commandOptions: [
+
+    new CommandOptionHelp "Specifying a Count Prefix",
+        "Pre-specify a <code>count</code> prefix for any command which uses a count prefix:",
+        """
+        # For a faster scroll than <i>press-and-hold</i> "j".
+        map X scrollDown count=3
+        """
+
+    new CommandOptionHelp "Creating Tabs",
+        "Use <code>createTab</code> to open specific URLs:"
+        """
+        map X createTab http://www.bbc.com/news https://www.theguardian.com/international
+        """
+
+    new CommandOptionHelp "Muting Tabs",
+        "Use <code>toggleMuteTab</code> to mute <i>all</i> tabs or <i>all other</i> tabs:"
+        """
+        map X toggleMuteTab all
+
+        # This mutes all audible tabs except the current tab.
+        map X toggleMuteTab other
+        """
+
+    new CommandOptionHelp "Launching Custom Search Engines",
+        "Use <code>LinkHints.activateMode</code> to directly launch a custom search-engine query.
+         For example, assuming suitable custom search engines <code>w</code> and <code>g</code>:"
+        """
+        # Launch a custom search in Wikipedia.
+        map X LinkHints.activateMode keyword=w
+
+        # Launch a custom search in Google.
+        map Y LinkHints.activateMode keyword=g
+        """
+
+
+  ]
 
 root = exports ? window
 root.Commands = Commands

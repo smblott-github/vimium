@@ -1,4 +1,5 @@
 root = exports ? window
+Commands.init()
 
 # The browser may have tabs already open. We inject the content scripts immediately so that they work straight
 # away.
