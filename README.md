@@ -164,7 +164,7 @@ Release Notes
 - Features:
     - The `createTab` command can now open specific URLs (e.g, `map X createTab http://www.bbc.com/news`).
     - With pass keys defined for a site (such as GMail), you can now use Vimium's bindings again with, for example, `map \ passNextKey normal`;
-      this reactivates normal mode temporarily, but with *without any pass keys*.
+      this reactivates normal mode temporarily, but *without any pass keys*.
     - You can now map multi-modifier keys, for example: `<c-a-X>`.
     - Vimium can now do simple key mapping in some modes; see
       [here](https://github.com/philc/vimium/wiki/Tips-and-Tricks#key-mapping).
@@ -173,6 +173,10 @@ Release Notes
     - For *Custom key mappings* on the options page, lines which end with `\` are now continued on the following line.
 - Process:
     - In order to provide faster bug fixes, we may in future push new releases without the noisy notification.
+
+- Post-release minor fixes:
+    - 1.58.1 (2017-03-09) fix bug in `LinkHints.activateModeWithQueue` (#2445).
+    - 1.58.2 (2017-03-19) fix key handling bug (#2453).
 
 1.57 (2016-10-01)
 
