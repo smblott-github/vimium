@@ -292,7 +292,7 @@ class LinkHintsMode
       if keyChar = KeyboardUtils.getKeyChar event
         @markerMatcher.pushKeyChar keyChar
         @updateVisibleMarkers()
-        DomUtils.consumeKeyup event
+        window.suppressKeyupEvents.suppress event
         return
 
     # We've handled the event, so suppress it and update the mode indicator.

@@ -147,6 +147,7 @@ class NormalMode extends KeyHandlerMode
 installModes = ->
   # Install the permanent modes. The permanently-installed insert mode tracks focus/blur events, and
   # activates/deactivates itself accordingly.
+  window.suppressKeyupEvents = new SuppressKeyupEvents
   normalMode = new NormalMode
   # Initialize components upon which normal mode depends.
   Scroller.init()

@@ -82,7 +82,7 @@ class Mode
         "keydown": (event) =>
           return @continueBubbling unless KeyboardUtils.isEscape event
           @exit event, event.target
-          DomUtils.suppressKeyupAfterEscape handlerStack
+          window.suppressKeyupEvents.suppress event
 
     # If @options.exitOnBlur is truthy, then it should be an element.  The mode will exit when that element
     # loses the focus.
@@ -208,5 +208,23 @@ class SuppressAllKeyboardEvents extends Mode
       suppressAllKeyboardEvents: true
     super extend defaults, options
 
+# A single instance of this mode sits at the bottom of the handler stack suppressing the keyup events for
+# other keyboard events which Vimium has handled.  The page should not see these keyup events.
+class SuppressKeyupEvents extends Mode
+  constructor: ->
+    @suppressedKeyupEvents = {}
+    super
+      name: "SuppressKeyupEvents"
+      keyup: (event) =>
+        if @suppressedKeyupEvents[event.code]
+          delete @suppressedKeyupEvents[event.code]
+          @suppressPropagation
+        else
+          @continueBubbling
+
+  suppress: (event) ->
+    @suppressedKeyupEvents[event.code] = true
+    handlerStack.suppressEvent
+
 root = exports ? window
-extend root, {Mode, SuppressAllKeyboardEvents}
+extend root, {Mode, SuppressAllKeyboardEvents, SuppressKeyupEvents}

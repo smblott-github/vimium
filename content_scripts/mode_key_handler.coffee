@@ -38,7 +38,7 @@ class KeyHandlerMode extends Mode
         keydown: (event) =>
           if KeyboardUtils.isEscape(event) and not @isInResetState()
             @reset()
-            DomUtils.suppressKeyupAfterEscape handlerStack
+            window.suppressKeyupEvents.suppress event
           else
             @continueBubbling
 
@@ -46,14 +46,17 @@ class KeyHandlerMode extends Mode
     keyChar = KeyboardUtils.getKeyCharString event
     isEscape = KeyboardUtils.isEscape event
     if isEscape and (@countPrefix != 0 or @keyState.length != 1)
-      DomUtils.consumeKeyup event, => @reset()
+      window.suppressKeyupEvents.suppress event
+      @reset()
     # If the help dialog loses the focus, then Escape should hide it; see point 2 in #2045.
     else if isEscape and HelpDialog?.isShowing()
-      DomUtils.consumeKeyup event, -> HelpDialog.toggle()
+      window.suppressKeyupEvents.suppress event
+      HelpDialog.toggle()
     else if isEscape
       @continueBubbling
     else if @isMappedKey keyChar
-      DomUtils.consumeKeyup event, => @handleKeyChar keyChar
+      window.suppressKeyupEvents.suppress event
+      @handleKeyChar keyChar
     else if @isCountKey keyChar
       digit = parseInt keyChar
       @reset if @keyState.length == 1 then @countPrefix * 10 + digit else digit
