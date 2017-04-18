@@ -159,6 +159,11 @@ Please see [CONTRIBUTING.md](https://github.com/philc/vimium/blob/master/CONTRIB
 Release Notes
 -------------
 
+1.59 (2017-04-07)
+
+- Features:
+    - Some commands now work on PDF tabs (`J`, `K`, `o`, `b`, etc.). Scrolling and other content-related commands still do not work.
+
 1.58 (2017-03-08)
 
 - Features:

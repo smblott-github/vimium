@@ -70,7 +70,7 @@ class Movement
     else
       @selection.modify @alterMethod, direction, granularity
 
-  # Return a simple camparable value which depends on various aspects of the selection.  This is used to
+  # Return a simple comparable value which depends on various aspects of the selection.  This is used to
   # detect, after a movement, whether the selection has changed.
   hashSelection: ->
     range = @selection.getRangeAt(0)
@@ -258,7 +258,7 @@ class VisualMode extends KeyHandlerMode
       _name: "#{@id}/enter/click"
       # Yank on <Enter>.
       keypress: (event) =>
-        if event.keyCode == keyCodes.enter
+        if event.key == "Enter"
           unless event.metaKey or event.ctrlKey or event.altKey or event.shiftKey
             @yank()
             return @suppressEvent
