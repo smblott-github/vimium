@@ -272,6 +272,8 @@ class BackgroundCompleter
     @reset()
 
     @port.onMessage.addListener (msg) =>
+      # Message bodies are encoded in JSON.  Decode such message bodies, if necessary.
+      extend msg, JSON.parse msg.messageJSON if msg.messageJSON
       switch msg.handler
         when "keywords"
           @keywords = msg.keywords

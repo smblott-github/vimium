@@ -54,7 +54,8 @@ completionHandlers =
       # This can happen, for example, when posting completion suggestions from the SearchEngineCompleter
       # (which is done asynchronously).
       try
-        port.postMessage extend request, extend response, handler: "completions"
+        # NOTE(smblott): Firefox baulks at some message contents, so we encode the response as JSON.
+        port.postMessage handler: "completions", messageJSON: JSON.stringify extend request, response
 
   refresh: (completer, _, port) -> completer.refresh port
   cancel: (completer, _, port) -> completer.cancel port
