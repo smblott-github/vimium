@@ -50,6 +50,9 @@ DOWNLOAD_LINK_URL =
 availableModes = [OPEN_IN_CURRENT_TAB, OPEN_IN_NEW_BG_TAB, OPEN_IN_NEW_FG_TAB, OPEN_WITH_QUEUE, COPY_LINK_URL,
   OPEN_INCOGNITO, DOWNLOAD_LINK_URL]
 
+requireHrefModes = [COPY_LINK_URL, OPEN_INCOGNITO]
+newTabModes = [OPEN_IN_NEW_BG_TAB, OPEN_IN_NEW_FG_TAB, OPEN_WITH_QUEUE]
+
 HintCoordinator =
   onExit: []
   localHints: null
@@ -82,7 +85,7 @@ HintCoordinator =
   getHintDescriptors: ({modeIndex, isVimiumHelpDialog}) ->
     # Ensure that the document is ready and that the settings are loaded.
     DomUtils.documentReady => Settings.onLoaded =>
-      requireHref = availableModes[modeIndex] in [COPY_LINK_URL, OPEN_INCOGNITO]
+      requireHref = availableModes[modeIndex] in requireHrefModes
       # If link hints is launched within the help dialog, then we only offer hints from that frame.  This
       # improves the usability of the help dialog on the options page (particularly for selecting command
       # names).
@@ -385,15 +388,12 @@ class LinkHintsMode
             window.focus()
             DomUtils.simulateSelect clickEl
           else
-            clickActivator = (modifiers) -> (link) ->
+            clickActivator = (modifiers) => (link) =>
               defaultActionsTriggered = DomUtils.simulateClick link, modifiers
-              if simulateClickDefaultAction and
-                  defaultActionsTriggered[3] and link.tagName?.toLowerCase() == "a" and
-                  modifiers? and modifiers.metaKey == isMac and modifiers.ctrlKey == not isMac
-              # We've clicked a link that *should* open in a new tab. If simulateClickDefaultAction is true,
-              # we assume the popup-blocker is active, and simulate opening the new tab ourselves.
-                chrome.runtime.sendMessage {handler: "openUrlInNewTab", url: link.href, active:
-                  modifiers.shiftKey == true}
+              if Utils.isFirefox() and defaultActionsTriggered[3] and link.href and @mode in newTabModes
+                # We've clicked a link that *should* open in a new tab. In Firefox, we assume that the
+                # popup-blocker is active, and simulate opening the new tab ourselves.
+                chrome.runtime.sendMessage handler: "openUrlInNewTab", url: link.href, active: @mode == OPEN_IN_NEW_FG_TAB
 
             linkActivator = @mode.linkActivator ? clickActivator @mode.clickModifiers
             # TODO: Are there any other input elements which should not receive focus?
