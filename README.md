@@ -80,6 +80,7 @@ Manipulating tabs:
     x       close current tab
     X       restore closed tab (i.e. unwind the 'x' command)
     T       search through your open tabs
+    W       move current tab to new window
     <a-p>   pin/unpin current tab
 
 Using marks:
@@ -156,13 +157,23 @@ Contributing
 ------------
 Please see [CONTRIBUTING.md](https://github.com/philc/vimium/blob/master/CONTRIBUTING.md) for details.
 
+Firefox Support
+---------------
+
+There is an *experimental* port of Vimium on Firefox [here](https://addons.mozilla.org/en-GB/firefox/addon/vimium-ff/).
+This is very much experimental: most features work, although some bugs and issues remain.
+
+PRs are welcome.
+
 Release Notes
 -------------
 
 Changes in git (not yet released)
 
+- Added a new option to ignore keyboard layout; this might be useful for users of non-Latin keyboards.
 - Firefox support.  This is a work in progress; please report any issues [here](https://github.com/philc/vimium/issues?q=is%3Aopen+sort%3Aupdated-desc).
 - Reworked key handling; please report any new key-handling bugs [here](https://github.com/philc/vimium/issues?q=is%3Aopen+sort%3Aupdated-desc).
+- Fixed search completion for Firefox (released as 1.59.1, Firefox only).
 
 1.59 (2017-04-07)
 
@@ -451,7 +462,7 @@ Changes in git (not yet released)
 -  Arrow keys and function keys can now be mapped using &lt;left&gt;, &lt;right&gt;, &lt;up&gt;, &lt;down&gt;,
    &lt;f1&gt;, &lt;f2&gt;, etc. in the mappings interface.
 -  There is a new command `goUp` (mapped to `gu` by default) that will go up one level in the URL hierarchy.
-   For example: from http://vimium.github.com/foo/bar to http://vimium.github.com/foo. At the moment, `goUp`
+   For example: from https://vimium.github.io/foo/bar to https://vimium.github.io/foo. At the moment, `goUp`
 does not support command repetition.
 -  Bug fixes and optimizations.
 
