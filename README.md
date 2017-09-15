@@ -168,13 +168,24 @@ PRs are welcome.
 Release Notes
 -------------
 
-Changes in git (not yet released)
+1.60 (2017-09-14)
 
-- Added a new option to ignore keyboard layout; this might be useful for users of non-Latin keyboards.
-- Firefox support.  This is a work in progress; please report any issues [here](https://github.com/philc/vimium/issues?q=is%3Aopen+sort%3Aupdated-desc).
-- Reworked key handling; please report any new key-handling bugs [here](https://github.com/philc/vimium/issues?q=is%3Aopen+sort%3Aupdated-desc).
-- Fixed search completion for Firefox (released as 1.59.1, Firefox only).
-- Fixed issue affecting hint placement when the display is zoomed.
+- Features:
+    - There's a new (advanced) option to ignore the keyboard layout; this can
+      be helpful for users of non-Latin keyboards.
+    - Firefox support.  This is a work in progress; please report any issues
+      [here](https://github.com/philc/vimium/issues?q=is%3Aopen+sort%3Aupdated-desc);
+      see the [add
+      on](https://addons.mozilla.org/en-GB/firefox/addon/vimium-ff/).
+
+- Bug fixes:
+    - Fixed issue affecting hint placement when the display is zoomed.
+    - Fixed search completion for Firefox (released as 1.59.1, Firefox only).
+
+- Minor versions:
+    - 1.60.1: fix [#2642](https://github.com/philc/vimium/issues/2642).
+    - 1.60.2: revert previous fix for HiDPI screens.  This was breaking link-hint positioning for some users.
+    - 1.60.3: [fix](https://github.com/philc/vimium/pull/2649) link-hint positioning.
 
 1.59 (2017-04-07)
 
