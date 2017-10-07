@@ -1,7 +1,7 @@
 Vimium - The Hacker's Browser
 =============================
 
-[![Build Status](https://secure.travis-ci.org/philc/vimium.png?branch=master)](https://travis-ci.org/philc/vimium)
+[![Build Status](https://travis-ci.org/philc/vimium.svg?branch=master)](https://travis-ci.org/philc/vimium)
 
 Vimium is a Chrome extension that provides keyboard-based navigation and control of the web in the spirit of
 the Vim editor.
@@ -12,7 +12,7 @@ You can install the stable version of Vimium from the
 [Chrome Extensions Gallery](https://chrome.google.com/extensions/detail/dbepggeogbaibhgnhhndojpepiihcmeb).
 
 Please see
-[CONTRIBUTING.md](https://github.com/philc/vimium/blob/master/CONTRIBUTING.md#installing-from-source)
+[CONTRIBUTING.md](CONTRIBUTING.md#installing-from-source)
 for instructions on how you can install Vimium from source.
 
 The Options page can be reached via a link on the help dialog (type `?`) or via the button next to Vimium on
@@ -150,12 +150,12 @@ Shifts are automatically detected so, for example, `<c-&>` corresponds to ctrl+s
 More documentation
 ------------------
 Many of the more advanced or involved features are documented on
-[Vimium's github wiki](https://github.com/philc/vimium/wiki). Also
+[Vimium's GitHub wiki](https://github.com/philc/vimium/wiki). Also
 see the [FAQ](https://github.com/philc/vimium/wiki/FAQ).
 
 Contributing
 ------------
-Please see [CONTRIBUTING.md](https://github.com/philc/vimium/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 Firefox Support
 ---------------
@@ -186,6 +186,7 @@ Release Notes
     - 1.60.1: fix [#2642](https://github.com/philc/vimium/issues/2642).
     - 1.60.2: revert previous fix for HiDPI screens.  This was breaking link-hint positioning for some users.
     - 1.60.3: [fix](https://github.com/philc/vimium/pull/2649) link-hint positioning.
+    - 1.60.4: [fix](https://github.com/philc/vimium/pull/2602) hints opening in new tab (Firefox only).
 
 1.59 (2017-04-07)
 

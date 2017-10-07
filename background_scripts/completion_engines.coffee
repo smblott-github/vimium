@@ -48,7 +48,7 @@ class Google extends GoogleXMLBaseEngine
   constructor: () ->
     super
       engineUrl: "https://suggestqueries.google.com/complete/search?ss_protocol=legace&client=toolbar&q=%s"
-      regexps: "^https?://[a-z]+\\.google\\.(com|ie|co\\.uk|ca|com\\.au)/"
+      regexps: "^https?://[a-z]+\\.google\\.(com|ie|co\\.(uk|jp)|ca|com\\.au)/"
       example:
         searchUrl: "https://www.google.com/search?q=%s"
         keyword: "g"
@@ -58,7 +58,7 @@ class GoogleMaps extends GoogleXMLBaseEngine
   constructor: () ->
     super
       engineUrl: "https://suggestqueries.google.com/complete/search?ss_protocol=legace&client=toolbar&q=#{@prefix.split(' ').join '+'}%s"
-      regexps: "^https?://[a-z]+\\.google\\.(com|ie|co\\.uk|ca|com\\.au)/maps"
+      regexps: "^https?://[a-z]+\\.google\\.(com|ie|co\\.(uk|jp)|ca|com\\.au)/maps"
       example:
         searchUrl: "https://www.google.com/maps?q=%s"
         keyword: "m"
@@ -116,6 +116,17 @@ class Amazon extends BaseEngine
 
   parse: (xhr) -> JSON.parse(xhr.responseText)[1]
 
+class AmazonJapan extends BaseEngine
+  constructor: ->
+    super
+      engineUrl: "https://completion.amazon.co.jp/search/complete?method=completion&search-alias=aps&client=amazon-search-ui&mkt=6&q=%s"
+      regexps: "^https?://www\\.amazon\\.co\\.jp/(s/|gp/search)"
+      example:
+        searchUrl: "https://www.amazon.co.jp/s/?field-keywords=%s"
+        keyword: "aj"
+
+  parse: (xhr) -> JSON.parse(xhr.responseText)[1]
+
 class DuckDuckGo extends BaseEngine
   constructor: ->
     super
@@ -169,6 +180,7 @@ CompletionEngines = [
   Wikipedia
   Bing
   Amazon
+  AmazonJapan
   Webster
   Qwant
   DummyCompletionEngine
