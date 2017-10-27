@@ -88,5 +88,6 @@ Marks =
                 @showMessage "Local mark not set", keyChar
           DomUtils.consumeKeyup event
 
-root = exports ? window
+root = exports ? (window.root ?= {})
 root.Marks =  Marks
+extend window, root unless exports?
