@@ -56,7 +56,7 @@ Marks =
             else
               localStorage[@getLocationKey keyChar] = @getMarkString()
               @showMessage "Created local mark", keyChar
-          DomUtils.consumeKeyup event
+          handlerStack.suppressEvent
 
   activateGotoMode: ->
     @mode = new Mode
@@ -86,7 +86,7 @@ Marks =
                 @showMessage "Jumped to local mark", keyChar
               else
                 @showMessage "Local mark not set", keyChar
-          DomUtils.consumeKeyup event
+          handlerStack.suppressEvent
 
 root = exports ? (window.root ?= {})
 root.Marks =  Marks
