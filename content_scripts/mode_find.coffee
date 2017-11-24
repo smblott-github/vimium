@@ -6,7 +6,7 @@ class SuppressPrintable extends Mode
   constructor: (options) ->
     super options
     handler = (event) => if KeyboardUtils.isPrintable event then @suppressEvent else @continueBubbling
-    type = document.getSelection().type
+    type = DomUtils.getSelectionType()
 
     # We use unshift here, so we see events after normal mode, so we only see unmapped keys.
     @unshift
@@ -16,7 +16,7 @@ class SuppressPrintable extends Mode
       keyup: (event) =>
         # If the selection type has changed (usually, no longer "Range"), then the user is interacting with
         # the input element, so we get out of the way.  See discussion of option 5c from #1415.
-        @exit() if document.getSelection().type != type
+        @exit() if DomUtils.getSelectionType() != type
 
 # When we use find, the selection/focus can land in a focusable/editable element.  In this situation, special
 # considerations apply.  We implement three special cases:
@@ -82,6 +82,7 @@ class FindMode extends Mode
     FindMode.handleEscape() if event
 
   restoreSelection: ->
+    return unless @initialRange
     range = @initialRange
     selection = getSelection()
     selection.removeAllRanges()
@@ -234,13 +235,13 @@ class FindMode extends Mode
 
 getCurrentRange = ->
   selection = getSelection()
-  if selection.type == "None"
+  if DomUtils.getSelectionType(selection) == "None"
     range = document.createRange()
     range.setStart document.body, 0
     range.setEnd document.body, 0
     range
   else
-    selection.collapseToStart() if selection.type == "Range"
+    selection.collapseToStart() if DomUtils.getSelectionType(selection) == "Range"
     selection.getRangeAt 0
 
 getLinkFromSelection = ->

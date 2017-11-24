@@ -5,7 +5,7 @@ Utils?.monitorChromeStorage "mapKeyRegistry", (value) => mapKeyRegistry = value
 KeyboardUtils =
   # This maps event.key key names to Vimium key names.
   keyNames:
-    "ArrowLeft": "left", "ArrowUp": "up", "ArrowRight": "right", "ArrowDown": "down", " ": "space", "Backspace": "backspace"
+    "ArrowLeft": "left", "ArrowUp": "up", "ArrowRight": "right", "ArrowDown": "down", " ": "space"
 
   init: ->
     if (navigator.userAgent.indexOf("Mac") != -1)
@@ -31,19 +31,17 @@ KeyboardUtils =
       else if key.length == 1 and not event.shiftKey
         key = key.toLowerCase()
 
-    if key of @keyNames
-      @keyNames[key]
     # It appears that key is not always defined (see #2453).
-    else if not key?
+    unless key
       ""
+    else if key of @keyNames
+      @keyNames[key]
+    else if @isModifier event
+      "" # Don't resolve modifier keys.
     else if key.length == 1
       key
-    else if key.length == 2 and "F1" <= key <= "F9"
-      key.toLowerCase() # F1 to F9.
-    else if key.length == 3 and "F10" <= key <= "F12"
-      key.toLowerCase() # F10 to F12.
     else
-      ""
+      key.toLowerCase()
 
   getKeyCharString: (event) ->
     if keyChar = @getKeyChar event
@@ -73,6 +71,9 @@ KeyboardUtils =
 
   isPrintable: (event) ->
     @getKeyCharString(event)?.length == 1
+
+  isModifier: (event) ->
+    event.key in ["Control", "Shift", "Alt", "OS", "AltGraph", "Meta"]
 
   enUsTranslations:
     "Backquote":     ["`", "~"]
