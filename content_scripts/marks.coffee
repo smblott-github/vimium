@@ -37,7 +37,7 @@ Marks =
       suppressAllKeyboardEvents: true
       keydown: (event) =>
         if KeyboardUtils.isPrintable event
-          keyChar = KeyboardUtils.getKeyChar event
+          keyChar = KeyboardUtils.getKeyChar event, true # "true" means consule mapKeyRegistry.
           @exit =>
             if @isGlobalMark event, keyChar
               # We record the current scroll position, but only if this is the top frame within the tab.
@@ -63,7 +63,7 @@ Marks =
       keydown: (event) =>
         if KeyboardUtils.isPrintable event
           @exit =>
-            keyChar = KeyboardUtils.getKeyChar event
+            keyChar = KeyboardUtils.getKeyChar event, true # "true" means consule mapKeyRegistry.
             if @isGlobalMark event, keyChar
               # This key must match @getLocationKey() in the back end.
               key = "vimiumGlobalMark|#{keyChar}"

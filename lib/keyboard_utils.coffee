@@ -15,7 +15,7 @@ KeyboardUtils =
     else
       @platform = "Windows"
 
-  getKeyChar: (event) ->
+  getKeyChar: (event, consultMapKeyRegistry = false) ->
     unless Settings.get "ignoreKeyboardLayout"
       key = event.key
     else if event.code[...6] == "Numpad"
@@ -30,6 +30,10 @@ KeyboardUtils =
         key = if event.shiftKey then @enUsTranslations[key][1] else @enUsTranslations[key][0]
       else if key.length == 1 and not event.shiftKey
         key = key.toLowerCase()
+
+    # This allows link-hints mode to request that the mapKeyRegistry be consulted (which otherwise only
+    # happens at the end of getKeyCharString().
+    key = mapKeyRegistry[key] ? key if consultMapKeyRegistry
 
     # It appears that key is not always defined (see #2453).
     unless key

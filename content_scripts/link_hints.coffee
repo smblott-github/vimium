@@ -276,9 +276,9 @@ class LinkHintsMode
       unless event.repeat
         keyChar =
           if Settings.get "filterLinkHints"
-            KeyboardUtils.getKeyChar(event)
+            KeyboardUtils.getKeyChar(event, true) # "true" means consult mapKeyRegistry.
           else
-            KeyboardUtils.getKeyChar(event).toLowerCase()
+            KeyboardUtils.getKeyChar(event, true).toLowerCase()
         if keyChar
           keyChar = " " if keyChar == "space"
           if keyChar.length == 1
