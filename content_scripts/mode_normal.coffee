@@ -91,9 +91,17 @@ NormalModeCommands =
 
   copyCurrentUrl: ->
     chrome.runtime.sendMessage { handler: "getCurrentTabUrl" }, (url) ->
-      chrome.runtime.sendMessage { handler: "copyToClipboard", data: url }
+      HUD.copyToClipboard url
       url = url[0..25] + "...." if 28 < url.length
       HUD.showForDuration("Yanked #{url}", 2000)
+
+  openCopiedUrlInNewTab: (count) ->
+    HUD.pasteFromClipboard (url) ->
+      chrome.runtime.sendMessage { handler: "openUrlInNewTab", url, count }
+
+  openCopiedUrlInCurrentTab: ->
+    HUD.pasteFromClipboard (url) ->
+      chrome.runtime.sendMessage { handler: "openUrlInCurrentTab", url }
 
   # Mode changes.
   enterInsertMode: ->
