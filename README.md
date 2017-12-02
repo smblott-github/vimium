@@ -22,7 +22,7 @@ Keyboard Bindings
 -----------------
 
 Modifier keys are specified as `<c-x>`, `<m-x>`, and `<a-x>` for ctrl+x, meta+x, and alt+x
-respectively. See the next section for how to customize these bindings.
+respectively. For shift+x and ctrl-shift-x, just type `X` and `<c-X>`. See the next section for how to customize these bindings.
 
 Once you have Vimium installed, you can see this list of key bindings at any time by typing `?`.
 
@@ -175,6 +175,9 @@ In `master` (not yet released)
 - It is now possible to map `<tab>`, `<enter>`, `<delete>`, `<insert>`, `<home>` and `<end>`.
 - New command options for `createTab` to create create new normal and incognito windows
   ([examples](https://github.com/philc/vimium/wiki/Tips-and-Tricks#creating-tabs-with-urls-and-windows)).
+- When upgrading, you will be asked to re-validate permissions.  The only new
+  permission is "copy and paste to/from clipboard" (the `clipboardWrite`
+  permission).  This is necessary to support copy/paste on Firefox.
 
 1.61 (2017-10-27)
 
