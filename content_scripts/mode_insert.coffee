@@ -16,8 +16,14 @@ class InsertMode extends Mode
       return @passEventToPage if activeElement == document.body and activeElement.isContentEditable
 
       # Check for a pass-next-key key.
-      if KeyboardUtils.getKeyCharString(event) in Settings.get "passNextKeyKeys"
-        new PassNextKeyMode
+      if registryEntry = Settings.get("passNextKeyKeys")[KeyboardUtils.getKeyCharString event]
+        if registryEntry.options.normal
+          new NormalMode
+            indicator: "Normal mode"
+            exitOnEscape: true
+            count: registryEntry.options.count ? 1
+        else
+          new PassNextKeyMode count: registryEntry.options.count ? 1
 
       else if event.type == 'keydown' and KeyboardUtils.isEscape(event)
         activeElement.blur() if DomUtils.isFocusable activeElement

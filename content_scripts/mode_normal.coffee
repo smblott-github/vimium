@@ -37,7 +37,6 @@ enterNormalMode = (count) ->
   new NormalMode
     indicator: "Normal mode (pass keys disabled)"
     exitOnEscape: true
-    singleton: "enterNormalMode"
     count: count
 
 NormalModeCommands =
