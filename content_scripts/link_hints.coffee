@@ -571,9 +571,9 @@ class FilterHints
               if position < 0
                 0 # No match.
               else if position == 0 and searchWord.length == linkWord.length
-                if idx == 0 then 8 else 6 # Whole-word match.
+                if idx == 0 then 8 else 4 # Whole-word match.
               else if position == 0
-                if idx == 0 then 4 else 2 # Match at the start of a word.
+                if idx == 0 then 6 else 2 # Match at the start of a word.
               else
                 1 # 0 < position; other match.
           Math.max linkWordScores...
@@ -589,7 +589,7 @@ class FilterHints
 
   # For filtered hints, we require a modifier (because <Space> on its own is a token separator).
   shouldRotateHints: (event) ->
-    event.ctrlKey or event.altKey or event.metaKey
+    event.ctrlKey or event.altKey or event.metaKey or event.shiftKey
 
 #
 # Make each hint character a span, so that we can highlight the typed characters as you type them.
@@ -607,7 +607,7 @@ LocalHints =
   # image), therefore we always return a array of element/rect pairs (which may also be a singleton or empty).
   #
   getVisibleClickable: (element) ->
-    # Get the tag name.  However, `element.tagName` can be an element (not a string, see #2305), so we guard
+    # Get the tag name.  However, `element.tagName` can be an element (not a string, see #2035), so we guard
     # against that.
     tagName = element.tagName.toLowerCase?() ? ""
     isClickable = false
@@ -705,6 +705,9 @@ LocalHints =
       when "details"
         isClickable = true
         reason = "Open."
+
+    # Detect elements with "click" listeners installed with `addEventListener()`.
+    isClickable ||= element.hasAttribute "_vimium-has-onclick-listener"
 
     # An element with a class name containing the text "button" might be clickable.  However, real clickables
     # are often wrapped in elements with such class names.  So, when we find clickables based only on their

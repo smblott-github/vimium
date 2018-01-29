@@ -146,6 +146,7 @@ initializePreDomReady = ->
     linkHintsMessage: (request) -> HintCoordinator[request.messageType] request
 
   chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
+    request.isTrusted = true
     # Some requests intended for the background page are delivered to the options page too; ignore them.
     unless request.handler and not request.name
       # Some request are handled elsewhere; ignore them too.
@@ -188,7 +189,7 @@ onFocus = forTrusted (event) ->
 # We install these listeners directly (that is, we don't use installListener) because we still need to receive
 # events when Vimium is not enabled.
 window.addEventListener "focus", onFocus
-window.addEventListener "hashchange", checkEnabledAfterURLChange
+window.addEventListener "hashchange", -> checkEnabledAfterURLChange()
 
 initializeOnDomReady = ->
   # Tell the background page we're in the domReady state.

@@ -169,15 +169,36 @@ PRs are welcome.
 Release Notes
 -------------
 
-In `master` (not yet released)
+Not yet released
+
+- Better detection of click listeners for link hints.
+- Display version number in page popup.
+
+1.62 (2017-12-09)
 
 - Backup and restore Vimium options (see the very bottom of the options page, below *Advanced Options*).
 - It is now possible to map `<tab>`, `<enter>`, `<delete>`, `<insert>`, `<home>` and `<end>`.
-- New command options for `createTab` to create create new normal and incognito windows
+- New command options for `createTab` to create new normal and incognito windows
   ([examples](https://github.com/philc/vimium/wiki/Tips-and-Tricks#creating-tabs-with-urls-and-windows)).
-- When upgrading, you will be asked to re-validate permissions.  The only new
-  permission is "copy and paste to/from clipboard" (the `clipboardWrite`
-  permission).  This is necessary to support copy/paste on Firefox.
+- Firefox only:
+    - Fix copy and paste commands.
+    - When upgrading, you will be asked to re-validate permissions.  The only
+      new permission is "copy and paste to/from clipboard" (the
+      `clipboardWrite` permission).  This is necessary to support copy/paste on
+      Firefox.
+- Various bug fixes.
+- 1.62.1: Swap global and local marks (1.62.1).
+  In a browser, some people find global marks more useful than local marks.
+  Example:
+
+```
+map X Marks.activateCreateMode swap
+map Y Marks.activateGotoMode swap
+```
+
+- Other minor versions:
+    - 1.62.2: Fixes [#2868](https://github.com/philc/vimium/issues/2868) (`createTab` with multiple URLs).
+    - 1.62.4: Fixes bug affecting the enabled state, and really fix `createTab`.
 
 1.61 (2017-10-27)
 

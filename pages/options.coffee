@@ -206,7 +206,7 @@ Options =
   grabBackFocus: CheckBoxOption
   searchEngines: TextOption
   searchUrl: NonEmptyTextOption
-  userDefinedLinkHintCss: TextOption
+  userDefinedLinkHintCss: NonEmptyTextOption
 
 initOptionsPage = ->
   onUpdated = ->
@@ -334,6 +334,11 @@ initPopupPage = ->
 
     updateState()
     document.addEventListener "keyup", updateState
+
+  # Install version number.
+  manifest = chrome.runtime.getManifest()
+  $("versionNumber").textContent = manifest.version
+
 
 #
 # Initialization.
