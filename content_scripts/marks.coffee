@@ -29,9 +29,12 @@ Marks =
   # characters.  The exceptions are "`" and "'", which are always considered local marks.
   # The "swap" command option inverts global and local marks.
   isGlobalMark: (event, keyChar) ->
-    shiftKey = event.shiftKey
-    shiftKey = not shiftKey if @currentRegistryEntry.options.swap
-    shiftKey and keyChar not in @previousPositionRegisters
+    if @currentRegistryEntry.options.type and @currentRegistryEntry.options.type in ["local", "global"]
+      @currentRegistryEntry.options.type == "global"
+    else
+      shiftKey = event.shiftKey
+      shiftKey = not shiftKey if @currentRegistryEntry.options.swap
+      shiftKey and keyChar not in @previousPositionRegisters
 
   activateCreateMode: (count, {registryEntry}) ->
     @currentRegistryEntry = registryEntry
