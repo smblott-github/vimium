@@ -851,6 +851,9 @@ LocalHints =
       linkText = element.textContent[...256]
     else if element.hasAttribute "title"
       linkText = element.getAttribute "title"
+    else if element.hasAttribute "aria-label"
+      linkText = element.getAttribute "aria-label"
+      showLinkText = true
     else
       linkText = element.innerHTML[...256]
 
