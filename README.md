@@ -166,3 +166,4 @@ See [CHANGELOG](CHANGELOG.md) for the major changes in each release.
 License
 -------
 Copyright (c) Phil Crosby, Ilya Sukhar. See [MIT-LICENSE.txt](MIT-LICENSE.txt) for details.
+Tue 27 Oct 10:18:50 GMT 2020
